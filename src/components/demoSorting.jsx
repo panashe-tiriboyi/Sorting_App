@@ -16,34 +16,24 @@ class Demo extends Component {
           ))}
         </div>
         <div>
-          <button className="btn btn-danger" onClick={this.sortingCall}>
+          <button className="btn btn-danger" onClick={this.sorting}>
             Sort
           </button>
         </div>
       </>
     );
   }
-  clickAuto = false;
-
-  sortingCall = () => {
-    const demoArray = [...this.state.demoArray];
-    let i = 0;
-    while (i < demoArray.length) {
-      this.sorting();
-      i++;
-    }
-    console.log("I is " + i);
-  };
 
   sorting = () => {
     let demoArray = [...this.state.demoArray];
     let seconddemoArray = [...this.state.demoArray];
     const timer = (ms) => new Promise((res) => setTimeout(res, ms));
-    for (let i = 1; i < demoArray.length; i++) {
-      console.log(i);
+    const intervaledsorting = async () => {
+      for (let i = 1; i < demoArray.length; i++) {
+        console.log(i);
 
-      const intervaledsorting = async () => {
         for (let j = 0; j < demoArray.length - 1; j++) {
+          await timer(1000);
           if (demoArray[j] > demoArray[j + 1]) {
             const a = demoArray[j];
             const b = demoArray[j + 1];
@@ -54,11 +44,10 @@ class Demo extends Component {
             console.log(seconddemoArray);
             this.setState({ demoArray: demoArray });
           }
-          await timer(1000);
         }
-      };
-      intervaledsorting();
-    }
+      }
+    };
+    intervaledsorting();
   };
 }
 
