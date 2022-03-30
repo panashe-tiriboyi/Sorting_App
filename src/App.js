@@ -10,12 +10,12 @@ class App extends Component {
       key: { value: 0 },
 
       data: [
-        { name: "Page A", uv: 10 },
-        { name: "Page A", uv: 15 },
-        { name: "Page A", uv: 20 },
-        { name: "Page A", uv: 7 },
-        { name: "Page A", uv: 2 },
-        { name: "Page A", uv: 16 },
+        { name: " ", uv: 10 },
+        { name: " ", uv: 15 },
+        { name: " ", uv: 20 },
+        { name: " ", uv: 7 },
+        { name: " ", uv: 2 },
+        { name: " ", uv: 16 },
       ],
     };
   }
@@ -23,7 +23,29 @@ class App extends Component {
   render() {
     console.log("Render" + this.state.data);
     return (
-      <>
+      <div className="container">
+        <div
+          style={{
+            marginTop: "20px",
+            marginBottom: "15px",
+          }}
+        >
+          <button
+            className="btn btn-primary"
+            style={{ margin: "5px" }}
+            onClick={this.handleUpdate}
+          >
+            Update
+          </button>
+
+          <button
+            className="btn btn-danger"
+            style={{ margin: "5px" }}
+            onClick={this.sorting}
+          >
+            Sort
+          </button>
+        </div>
         <div>
           <Rechar
             keyValue={this.state.key.value}
@@ -31,34 +53,28 @@ class App extends Component {
             data={this.state.data}
           />
         </div>
-        <div>
-          <button className="btn btn-primary" onClick={this.handleChange}>
-            Update
-          </button>
-
-          <button className="btn btn-danger" onClick={this.sorting}>
-            Sort
-          </button>
-          <div>
-            <p>{this.sortedArray}</p>
-          </div>
-        </div>
-      </>
+      </div>
     );
   }
+  arraySize = 50;
 
   randomInteger = () => {
     return Math.floor(Math.random() * 20) + 1;
   };
+
   randomArray = [];
-  size = 50;
-  handleChange = () => {
-    this.reset = false;
+  resetCurrentSorting = false;
+
+  handleUpdate = () => {
+    this.resetCurrentSorting = false;
+
     const key = { ...this.state.key };
     this.barColors = [];
+
+    //reset randomArray to 0
     this.randomArray = [];
 
-    for (let i = 0; i < this.size; i++) {
+    for (let i = 0; i < this.arraySize; i++) {
       this.randomArray.push(this.randomInteger());
       this.barColors.push("#FFce30");
     }
@@ -66,7 +82,7 @@ class App extends Component {
     key.value = 0;
 
     const data = this.randomArray.map((element) => ({
-      name: "Page A",
+      name: " ",
       uv: element,
     }));
 
@@ -96,6 +112,7 @@ class App extends Component {
 
   sortedArray = [];
 
+  //Sorted array to compare for terminating Sorting function when array is sorted
   arrayCompare = () => {
     let dataArray = [...this.randomArray];
     let secondDataArray = [...this.randomArray];
@@ -112,22 +129,23 @@ class App extends Component {
       }
     }
   };
-  reset = false;
 
   sorting = () => {
-    if (this.reset) {
-      this.reset = false;
+    if (this.resetCurrentSorting) {
+      this.resetCurrentSorting = false;
     } else {
-      this.reset = true;
+      this.resetCurrentSorting = true;
     }
 
-    const resetKey = { value: 0 };
+    const resetCurrentSortingKey = { value: 0 };
 
-    this.setState({ key: resetKey });
+    this.setState({ key: resetCurrentSortingKey });
+
     this.arrayCompare();
+
     let data = {};
     let colors = [];
-    for (let i = 0; i < this.size; i++) {
+    for (let i = 0; i < this.arraySize; i++) {
       colors.push("#FFce30");
     }
 
@@ -143,9 +161,15 @@ class App extends Component {
         let stringSortedArray = JSON.stringify(dataArray);
         let stringDataArray = JSON.stringify(this.sortedArray);
 
-        if (stringDataArray == stringSortedArray || this.reset == false) break;
+        if (
+          stringDataArray == stringSortedArray ||
+          this.resetCurrentSorting == false
+        )
+          break;
+
         for (let j = 0; j < dataArray.length - 1; j++) {
-          if (this.reset == false) break;
+          if (this.resetCurrentSorting == false) break;
+
           if (dataArray[j] > dataArray[j + 1]) {
             const a = dataArray[j];
             const b = dataArray[j + 1];
@@ -159,7 +183,7 @@ class App extends Component {
             console.log(secondDataArray);
             console.log(this.barColors);
             data = dataArray.map((element) => ({
-              name: "Page A",
+              name: " ",
               uv: element,
             }));
 
@@ -167,6 +191,7 @@ class App extends Component {
 
             this.setState({ key: keyValue });
             this.setState({ data: data });
+
             await timer(100);
           } else {
             keyValue.value++;
@@ -176,6 +201,7 @@ class App extends Component {
             this.barColors[j + 1] = "#E389B9";
 
             this.setState({ key: keyValue });
+
             await timer(50);
           }
         }

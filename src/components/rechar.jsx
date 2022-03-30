@@ -30,8 +30,8 @@ class Rechar extends Component {
   render() {
     console.log("Render bar " + this.props.data);
     return (
-      <>
-        <ResponsiveContainer width="100%" aspect={3}>
+      <div>
+        <ResponsiveContainer width="100%" aspect={2}>
           <BarChart
             width={500}
             height={300}
@@ -57,9 +57,10 @@ class Rechar extends Component {
           </BarChart>
         </ResponsiveContainer>
         <div>
-          <p style={{ fontSize: "100px" }}>{this.props.keyValue}</p>
+          <p>Number of Iterrations Before sort</p>
+          <p style={{ fontSize: "80px" }}>{this.props.keyValue}</p>
         </div>
-      </>
+      </div>
     );
   }
 
